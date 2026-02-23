@@ -429,6 +429,7 @@ function bindEvents() {
 
   document.getElementById("shareCodeBtn").addEventListener("click", () => {
     state.shares += 1;
+    evaluateChallengesForMonth(new Date().toISOString().slice(0, 7));
     addXp(50, "Partilha de código Goldenergy");
     saveState();
     render();

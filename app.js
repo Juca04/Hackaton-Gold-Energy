@@ -375,6 +375,30 @@ function bindEvents() {
     event.target.reset();
   });
 
+  document.getElementById("discountForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const month = document.getElementById("discountMonthInput").value;
+    if (!month || getDiscountsAvailable() <= 0) {
+      pushNotification("info", "Sem descontos disponíveis neste momento.");
+      saveState();
+      render();
+      return;
+    }
+
+    state.spendHistory.unshift({
+      date: new Date().toLocaleString("pt-PT"),
+      month,
+      source: "Desconto de marco de XP"
+    });
+    state.spendHistory = state.spendHistory.slice(0, 40);
+
+    pushNotification("desconto", `Aplicaste 5€ de desconto na fatura de ${month}.`);
+    saveState();
+    render();
+    event.target.reset();
+  });
+
   document.getElementById("payInvoiceBtn").addEventListener("click", () => {
     state.paidInvoices += 1;
     addXp(50, "Pagamento de fatura");
